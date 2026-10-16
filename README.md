@@ -85,7 +85,7 @@ npm run dev      # 后端先在另一个终端运行 python run.py --no-browser
 npm run build    # 将 web/dist 一同提交，保持下载即用
 ```
 
-生产演示由 Python 服务 `web/dist`；Vite 开发代理指向默认后端 8091。依赖锁定在 package-lock.json。前端开发服务无需暴露到公网。
+生产演示由 Python 服务 `web/dist`；Vite 开发代理指向默认后端 8091。若后端改用其他端口，在启动 Vite 的终端设置 `CMDB_BACKEND_PORT` 为该端口。依赖锁定在 package-lock.json；`.gitattributes` 固定文本换行，确保跨平台重建一致。前端开发服务无需暴露到公网。
 
 ## 架构与目录
 
