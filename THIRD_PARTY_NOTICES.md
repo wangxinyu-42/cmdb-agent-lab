@@ -1,6 +1,6 @@
 # Third-party notices
 
-The prebuilt frontend includes React and React DOM, copyright Meta Platforms, Inc. and affiliates, distributed under the MIT License. Their license text is retained in `web/dist/assets/*.js` (bundled license comments). Vite, esbuild and Rollup are build dependencies; dependency versions and resolved packages are listed in `web/package-lock.json`. Source package licenses are available when running `npm ci` in `web/`.
+The prebuilt frontend includes React and React DOM, copyright Meta Platforms, Inc. and affiliates, distributed under the MIT License. Their license text is reproduced below. Vite, esbuild and Rollup are build dependencies; dependency versions and resolved packages are listed in `web/package-lock.json`. Source package licenses are available when running `npm ci` in `web/`.
 
 ## React / React DOM — MIT License
 

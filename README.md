@@ -14,7 +14,7 @@ cd cmdb-agent-lab
 python run.py
 ```
 
-打开 **http://127.0.0.1:8091**。Windows 也可双击 `start.cmd`；macOS / Linux 使用 `python3 run.py` 或 `sh start.sh`。按 `Ctrl+C` 停止。
+打开 [http://127.0.0.1:8091](http://127.0.0.1:8091)。Windows 也可双击 `start.cmd`；macOS / Linux 使用 `python3 run.py` 或 `sh start.sh`。按 `Ctrl+C` 停止。
 
 如果端口占用：`python run.py --port 8092`。无桌面或不希望自动打开浏览器：`python run.py --no-browser`。本项目仅绑定本机回环地址。
 
