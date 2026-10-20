@@ -53,7 +53,9 @@ def run(question, provider=None, max_rounds=4, max_calls=8, deadline=60):
             message = provider.complete(messages, timeout=min(30, remaining))
             if not isinstance(message, dict) or message.get('role') != 'assistant':
                 raise ValueError('invalid message')
-            calls = message.get('tool_calls') or []
+            calls = message.get('tool_calls')
+            if calls is None:
+                calls = []
             if not isinstance(calls, list):
                 raise ValueError('invalid calls')
         except Exception:

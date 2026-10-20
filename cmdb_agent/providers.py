@@ -26,7 +26,7 @@ class DemoProvider:
         if is_write_request(q):
             return {'role': 'assistant', 'content': '当前项目只支持只读查询，不能执行资产变更。'}
         racks = list(dict.fromkeys(re.findall(r'(?<![A-Za-z0-9])[A-Z]\d{2}(?![A-Za-z0-9])', q.upper())))
-        ids = list(dict.fromkeys(re.findall(r'SYN-\d{3}(?!\d)', q.upper())))
+        ids = list(dict.fromkeys(re.findall(r'(?<![A-Z0-9])SYN-\d{3}(?![A-Z0-9])', q.upper())))
         envs = [e for e in ('test', 'dev', 'prod') if re.search(r'\b' + e + r'\b', q, re.I)]
         if '测试环境' in q and 'test' not in envs:
             envs.append('test')
@@ -40,6 +40,16 @@ class DemoProvider:
         query = bool(re.search(r'查询|查看|设备|资产|详情|list|asset|detail', q, re.I))
         if not (audit or query):
             return {'role': 'assistant', 'content': '支持资产查询、单设备详情和数据稽核。请明确机柜或设备 ID。'}
+        # Unsupported constraints must not silently turn into an unfiltered query.
+        rack_tokens = re.findall(r'(?<![A-Z0-9])[A-Z]\d+(?![A-Z0-9])', q.upper())
+        env_tokens = re.findall(r'\b(?:in|environment|env)\s+([a-z][a-z0-9_-]*)\b', q, re.I)
+        if (any(t not in racks for t in rack_tokens)
+                or any(t.lower() not in envs and t.upper() not in racks for t in env_tokens)
+                or ('SYN-' in q.upper() and not ids)
+                or re.search(r'\b(?:qa|staging|uat|production|development|testing)\b', q, re.I)):
+            return {'role': 'assistant', 'content': '请补充有效筛选条件：机柜如 A01，设备如 SYN-003，环境仅支持 test / dev / prod。'}
+        if re.search(r'排除|除了|不在|非测试|非开发|非生产|\b(?:not|except|excluding)\b', q, re.I):
+            return {'role': 'assistant', 'content': '暂不支持排除条件，请使用单个机柜、环境或设备 ID 的精确查询。'}
         if ('机柜' in q and not racks) or ('环境' in q and not envs):
             return {'role': 'assistant', 'content': '请补充机柜编号（如 A01）或环境（test / dev / prod）。'}
         args = {}
